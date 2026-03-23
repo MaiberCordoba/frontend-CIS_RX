@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+@theme {
+  --color-primary: #1565ae;         /* Azul Principal */
+  --color-primary-hover: #0f4598;   /* Azul Oscuro para botones */
+  --color-secondary: #6c63ff;       /* Morado sutil */
+  --color-white: #ffffff;           /* Fondo blanco */
+}
+
+
+:root {
+  background-color: var(--color-white);
+  color: #1e293b;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+@custom-variant dark (&:is(.dark *));
