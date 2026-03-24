@@ -1,69 +1,40 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Vite + HeroUI",
-  description: "Make beautiful websites regardless of your design experience.",
+  name: "CIS RX",
+  description: "Sistema de Gestión inventarial y Cierres de Caja",
   navItems: [
     {
-      label: "Home",
+      label: "Cajas",
       href: "/",
     },
     {
-      label: "Docs",
+      label: "Estudios",
       href: "/docs",
     },
     {
-      label: "Pricing",
+      label: "Inventario",
       href: "/pricing",
-    },
-    {
-      label: "Blog",
-      href: "/blog",
-    },
-    {
-      label: "About",
-      href: "/about",
     },
   ],
   navMenuItems: [
     {
-      label: "Profile",
-      href: "/profile",
+      label: "Cajas",
+      href: "/",
     },
     {
-      label: "Dashboard",
+      label: "Estudios",
       href: "/dashboard",
     },
     {
-      label: "Projects",
+      label: "Inventario",
       href: "/projects",
     },
     {
-      label: "Team",
-      href: "/team",
-    },
-    {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
-    },
-    {
-      label: "Logout",
-      href: "/logout",
+      label: "Cerrar sesion",
+      href: "/projects",
     },
   ],
   links: {
-    github: "https://github.com/heroui-inc/heroui",
-    twitter: "https://twitter.com/hero_ui",
-    docs: "https://heroui.com",
-    discord: "https://discord.gg/9b6yyZKmH4",
-    sponsor: "https://patreon.com/jrgarciadev",
   },
 };
