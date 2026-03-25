@@ -10,7 +10,7 @@ export const siteConfig = {
     },
     {
       label: "Estudios",
-      href: "/docs",
+      href: "/estudios",
     },
     {
       label: "Inventario",
