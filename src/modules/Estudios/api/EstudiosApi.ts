@@ -14,3 +14,12 @@ export const createEstudio = async (data: Partial<Estudio>) => {
 export const updateEstudio = async (id: number, data: Partial<Estudio>) => {
   return await baseApi.put(`estudio/${id}/`, data);
 };
+
+export const uploadEstudios = async (file: File): Promise<{ creados: number; actualizados: number; total: number }> => {
+  const formData = new FormData();
+  formData.append('archivo', file);
+  const response = await baseApi.post('estudios/carga-masiva/', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+  return response.data;
+};
