@@ -1,4 +1,4 @@
-
+// src/modules/Estudios/components/EstudioFormModal.tsx
 import { Button, Form, Spinner } from "@heroui/react";
 import { useForm, FormProvider } from "react-hook-form";
 import { useEffect } from "react";
@@ -21,22 +21,40 @@ export const EstudioFormModal = ({
   onSave,
   isSaving,
 }: Props) => {
-  const methods = useForm<Partial<Estudio>>();
+  const methods = useForm<Partial<Estudio>>({
+    defaultValues: {
+      codigo: "",
+      nombre: "",
+      precio_particular: "",
+      precio_medicos: "",
+      precio_previred: "",
+      precio_plan_paciente_frecuente: "",
+    }
+  });
 
   useEffect(() => {
     if (isOpen) {
-      methods.reset(
-        selectedEstudio ?? {
+      if (selectedEstudio) {
+        methods.reset({
+          codigo: selectedEstudio.codigo,
+          nombre: selectedEstudio.nombre,
+          precio_particular: selectedEstudio.precio_particular,
+          precio_medicos: selectedEstudio.precio_medicos,
+          precio_previred: selectedEstudio.precio_previred,
+          precio_plan_paciente_frecuente: selectedEstudio.precio_plan_paciente_frecuente,
+        });
+      } else {
+        methods.reset({
           codigo: "",
           nombre: "",
           precio_particular: "",
           precio_medicos: "",
           precio_previred: "",
           precio_plan_paciente_frecuente: "",
-        }
-      );
+        });
+      }
     }
-  }, [isOpen, selectedEstudio]);
+  }, [isOpen, selectedEstudio, methods]);
 
   return (
     <AppModal
@@ -44,7 +62,6 @@ export const EstudioFormModal = ({
       onOpenChange={onOpenChange}
       title={selectedEstudio ? "Editar Estudio" : "Nuevo Estudio"}
     >
-      
       {((close: () => void) => (
         <FormProvider {...methods}>
           <Form
@@ -53,6 +70,7 @@ export const EstudioFormModal = ({
               e.preventDefault();
               methods.handleSubmit((data) => {
                 onSave(data);
+                close(); // Cerrar el modal después de guardar
               })(e);
             }}
           >
