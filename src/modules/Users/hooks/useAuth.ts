@@ -1,21 +1,35 @@
+// src/modules/Users/hooks/useAuth.ts
 import { useMutation } from "@tanstack/react-query";
-import { loginRequest } from "../api/authApi";
+import { loginRequest, getMe } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
+import { useAuth as useAuthContext } from "@/context/AuthContext";
 
 export const useAuth = () => {
   const navigate = useNavigate();
+  const { login } = useAuthContext();
 
   return useMutation({
     mutationFn: loginRequest,
-    onSuccess: (data) => {
-      localStorage.setItem('token', data.access);
-      localStorage.setItem('refresh', data.refresh);
-      // reset() // Si pasas el reset de react-hook-form aquí, limpias el formulario
-      navigate('/dashboard', { replace: true });
+    onSuccess: async (data) => {
+      const { access, refresh } = data;
+      
+      // Guardar tokens temporalmente para poder llamar a /me/
+      localStorage.setItem('token', access);
+      localStorage.setItem('refresh', refresh);
+      
+      try {
+        const userData = await getMe();
+        // Guardar todo en el contexto y localStorage
+        login(access, refresh, userData);
+      } catch (error) {
+        console.error('Error al obtener perfil:', error);
+        // Si falla, al menos guardamos los tokens
+        login(access, refresh);
+      }
+      
+      navigate('/estudios', { replace: true });
     },
     onError: (error: any) => {
-      // Al haber un error, TanStack Query automáticamente pone isPending en false
-      // Así el botón vuelve a su estado normal.
       const mensaje = error.response?.data?.detail || "Credenciales incorrectas";
       alert(mensaje);
     }

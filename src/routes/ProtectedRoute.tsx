@@ -1,13 +1,18 @@
+// src/routes/ProtectedRoute.tsx
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export const ProtectedRoute = () => {
-  const token = localStorage.getItem('token');
+  const { isAuthenticated, loading } = useAuth();
 
-  // Si no hay token, mandamos al login
-  if (!token) {
+  // Mientras carga, no mostrar nada o un spinner
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center">Cargando...</div>;
+  }
+
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // Si hay token, dejamos pasar a las rutas hijas
   return <Outlet />;
 };

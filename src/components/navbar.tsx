@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Button, Kbd, Link, TextField, InputGroup } from "@heroui/react";
 import clsx from "clsx";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
@@ -13,6 +15,13 @@ import {
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   const searchInput = (
     <TextField aria-label="Search" type="search">
@@ -57,15 +66,23 @@ export const Navbar = () => {
         </div>
 
         <div className="hidden sm:flex items-center gap-2">
+          {/* Mostrar usuario autenticado */}
+          {isAuthenticated && user && (
+            <div className="flex items-center gap-2 mr-2">
+              <span className="text-sm hidden md:inline">
+                {user.username || `Usuario #${user.id}`}
+              </span>
+              <span className="text-xs text-muted hidden md:inline ml-1">
+                ({user.rol})
+              </span>
+            </div>
+          )}
           <ThemeSwitch />
           <div className="hidden lg:flex">{searchInput}</div>
           <div className="hidden md:flex">
             <Button
               variant="primary"
-              onPress={() => {
-                localStorage.clear(); // Borra token y todo lo demás
-                window.location.replace('/login'); // Reemplaza la historia para que no pueda volver atrás
-              }}
+              onPress={handleLogout}
             >
               Salir
             </Button>
