@@ -1,6 +1,5 @@
 // src/components/global/SearchInput.tsx
 import { Input } from "@heroui/react";
-import { Search } from "lucide-react";
 
 interface Props {
   value: string;
@@ -14,7 +13,6 @@ export const SearchInput = ({ value, onChange, placeholder = "Buscar..." }: Prop
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      startContent={<Search size={16} />}
       className="w-full sm:w-64"
     />
   );

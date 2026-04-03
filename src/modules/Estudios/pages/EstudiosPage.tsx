@@ -53,16 +53,16 @@ export default function EstudiosPage() {
     { id: "acciones", label: "ACCIONES", align: "end" as const },
   ];
 
-  const toolbarButtons = (
-    <>
-      <ActionButton onPress={() => setIsUploadModalOpen(true)} icon={<Upload size={18} />}>
-        Carga masiva
-      </ActionButton>
-      <ActionButton onPress={handleOpenCreate} icon={<Plus size={18} />}>
-        Nuevo Estudio
-      </ActionButton>
-    </>
-  );
+    const toolbarButtons = (
+      <>
+        <ActionButton onPress={() => setIsUploadModalOpen(true)} icon={<Upload size={18} />}>
+          Carga masiva
+        </ActionButton>
+        <ActionButton onPress={handleOpenCreate} icon={<Plus size={18} />}>
+          Nuevo Estudio
+        </ActionButton>
+      </>
+    );
 
   return (
     <div className="flex flex-col gap-4"> {/* Reducido de gap-6 a gap-4 */}

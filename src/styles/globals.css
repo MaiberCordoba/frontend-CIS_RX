@@ -1,20 +1,31 @@
+/* styles/global.css */
 @import "tailwindcss";
 @import "@heroui/styles";
 
 @theme {
-  --color-primary: #1565ae;         /* Azul Principal */
-  --color-primary-hover: #0f4598;   /* Azul Oscuro para botones */
+  --color-primary: #1565ae;         /* Tu azul principal */
+  --color-primary-hover: #0f4598;   /* Azul oscuro para hover */
   --color-secondary: #6c63ff;       /* Morado sutil */
   --color-white: #ffffff;           /* Fondo blanco */
 }
 
-
+/* 👇 Vincula tus variables con HeroUI */
 :root {
-  background-color: var(--color-white);
-  color: #1e293b;
+  --color-primary: #1565ae;
+  --color-primary-hover: #0f4598;
+  
+  /* HeroUI primary variables */
+  --heroui-primary: var(--color-primary);
+  --heroui-primary-hover: var(--color-primary-hover);
+  --heroui-primary-foreground: #ffffff;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
+/* Para botones con variant="primary" */
+[data-variant="primary"] {
+  background-color: var(--heroui-primary) !important;
+  color: var(--heroui-primary-foreground) !important;
 }
-@custom-variant dark (&:is(.dark *));
+
+[data-variant="primary"]:hover {
+  background-color: var(--heroui-primary-hover) !important;
+}

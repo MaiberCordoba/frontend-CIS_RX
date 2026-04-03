@@ -12,6 +12,8 @@ import {
   SearchIcon,
   Logo,
 } from "@/components/icons";
+import { ActionButton } from "./global/ActionButton";
+import { LogOut } from "lucide-react";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -80,12 +82,9 @@ export const Navbar = () => {
           <ThemeSwitch />
           <div className="hidden lg:flex">{searchInput}</div>
           <div className="hidden md:flex">
-            <Button
-              variant="primary"
-              onPress={handleLogout}
-            >
+            <ActionButton size='sm' variant="primary" onPress={handleLogout} icon={<LogOut size={16} />}>
               Salir
-            </Button>
+            </ActionButton>
           </div>
         </div>
 
