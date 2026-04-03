@@ -77,7 +77,7 @@ export default function EstudiosPage() {
         toolbarButtons={toolbarButtons}
         renderRow={(estudio: Estudio) => (
           <Table.Row key={estudio.id}>
-            <Table.Cell className="font-bold text-primary whitespace-nowrap">
+            <Table.Cell className="font-bold text-primary  dark:text-gray-400 whitespace-nowrap">
               {estudio.codigo}
             </Table.Cell>
             <Table.Cell className="font-medium whitespace-nowrap">{estudio.nombre}</Table.Cell>

@@ -12,7 +12,7 @@ interface Props<T> {
   renderRow: (item: T) => ReactNode;
   isLoading?: boolean;
   ariaLabel: string;
-  title?: string; // 👈 Título opcional
+  title?: string; 
   searchTerm?: string;
   onSearchChange?: (term: string) => void;
   toolbarButtons?: ReactNode;
@@ -37,12 +37,12 @@ export function DataTable<T>({
   });
 
   return (
-    <div className="flex flex-col gap-3"> {/* Reducido de gap-4 a gap-3 */}
+    <div className="flex flex-col gap-3"> 
       {/* Toolbar con título a la izquierda y controles a la derecha */}
       {(title || searchTerm !== undefined || toolbarButtons) && (
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Título (izquierda) */}
-          {title && <h2 className="text-xl font-bold text-primary">{title}</h2>}
+          {title && <h2 className="text-xl font-bold text-primary dark:text-white">{title}</h2>}
           
           {/* Controles (derecha) */}
           <div className="flex flex-wrap items-center gap-2">
