@@ -21,7 +21,7 @@ export const AppModal = ({ isOpen, onOpenChange, title, children }: Props) => {
 
   return (
     <Modal state={state}>
-      <Modal.Backdrop variant="transparent">
+      <Modal.Backdrop variant="opaque">
         <Modal.Container>
           <Modal.Dialog className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-default-200 w-full max-w-[500px] outline-none">
             {({ close }) => (

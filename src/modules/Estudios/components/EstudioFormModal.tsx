@@ -96,7 +96,7 @@ export const EstudioFormModal = ({
 
             <div className="md:col-span-2 flex justify-end gap-2 mt-4 pb-2">
               <Button
-                variant="ghost"
+                variant="danger"
                 onPress={close}
                 isDisabled={isSaving}
               >
