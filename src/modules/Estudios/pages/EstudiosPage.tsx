@@ -97,12 +97,12 @@ export default function EstudiosPage() {
               <div className="flex items-center justify-end gap-2">
                 <Button
                   isIconOnly
-                  variant="ghost"
                   size="sm"
+                  className="bg-transparent text-primary hover:bg-primary/10 dark:bg-primary dark:text-white dark:hover:bg-primary/80"
                   onPress={() => handleOpenEdit(estudio)}
                   aria-label="Editar estudio"
                 >
-                  <Pencil size={16} className="text-primary" />
+                  <Pencil size={16} />
                 </Button>
               </div>
             </Table.Cell>
