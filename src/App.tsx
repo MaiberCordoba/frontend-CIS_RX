@@ -8,6 +8,7 @@ import LoginPage from "./modules/Users/pages/loginPage";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import EstudiosPage from "./modules/Estudios/pages/EstudiosPage";
 import DefaultLayout from "./layouts/default";
+import ArqueoPage from "./modules/Arqueos/pages/ArqueoPage";
 
 function App() {
   return (
@@ -23,6 +24,13 @@ function App() {
             <EstudiosPage />
           </DefaultLayout>
           } path="/estudios" />
+
+        <Route element={
+          <DefaultLayout>
+            <ArqueoPage />
+          </DefaultLayout>
+          } path="/arqueo" />
+
         <Route element={<PricingPage />} path="/pricing" />
         <Route element={<BlogPage />} path="/blog" />
         <Route element={<AboutPage />} path="/about" />

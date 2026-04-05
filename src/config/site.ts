@@ -5,8 +5,8 @@ export const siteConfig = {
   description: "Sistema de Gestión inventarial y Cierres de Caja",
   navItems: [
     {
-      label: "Cajas",
-      href: "/",
+      label: "Arqueo",
+      href: "/arqueo",
     },
     {
       label: "Estudios",
@@ -19,12 +19,12 @@ export const siteConfig = {
   ],
   navMenuItems: [
     {
-      label: "Cajas",
-      href: "/",
+      label: "Arqueo",
+      href: "/arqueo",
     },
     {
       label: "Estudios",
-      href: "/dashboard",
+      href: "/estudios",
     },
     {
       label: "Inventario",
