@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Kbd, Link, TextField, InputGroup } from "@heroui/react";
+import { Kbd, Link, TextField, InputGroup } from "@heroui/react";
 import clsx from "clsx";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
