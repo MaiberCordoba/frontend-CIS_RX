@@ -88,15 +88,16 @@ export const AyudaSumatoriaModal = ({
               />
             </div>
             <Button
-              onPress={() => {
-                const num = parseFloat(valorPersonalizado);
-                if (!isNaN(num) && num > 0) {
-                  agregarValor(num);
-                  setValorPersonalizado("");
-                }
-              }}
+                isIconOnly 
+                onPress={() => {
+                    const num = parseFloat(valorPersonalizado);
+                    if (!isNaN(num) && num > 0) {
+                    agregarValor(num);
+                    setValorPersonalizado("");
+                    }
+                }}
             >
-              <Plus size={16} /> Agregar
+              <Plus size={16} /> 
             </Button>
           </div>
 
@@ -145,7 +146,7 @@ export const AyudaSumatoriaModal = ({
           </div>
 
           <div className="flex justify-end gap-2 mt-2">
-            <Button variant="ghost" onPress={() => handleClose(close)}>
+            <Button variant="danger-soft" onPress={() => handleClose(close)}>
               Cerrar
             </Button>
           </div>

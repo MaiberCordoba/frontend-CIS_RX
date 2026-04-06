@@ -1,7 +1,16 @@
 // src/modules/Arqueos/ArqueoTypes.ts
-export interface DetalleDenominacion {
+
+// Para enviar al backend (sin subtotal)
+export interface DetalleDenominacionRequest {
   denominacion: number;
   cantidad: number;
+}
+
+// Para recibir del backend (con subtotal)
+export interface DetalleDenominacionResponse {
+  denominacion: number;
+  cantidad: number;
+  subtotal: number;
 }
 
 export interface Transferencia {
@@ -13,9 +22,9 @@ export interface ArqueoRequest {
   usuario_id: number;
   responsable_nombre: string;
   total_facturado: number;
-  detalles: DetalleDenominacion[];
+  detalles: DetalleDenominacionRequest[];
   transferencias: Transferencia[];
-  observaciones?: string;  // agregado
+  observaciones?: string;
 }
 
 export interface ArqueoResponse {
@@ -23,15 +32,14 @@ export interface ArqueoResponse {
   usuario_id: number;
   responsable_nombre: string;
   total_facturado: number;
-  total_transferencias: number;
   total_efectivo_fisico: number;
+  total_transferencias: number;
   gran_total_real: number;
   diferencia: number;
   fecha: string;
   hora: string;
-  detalles: DetalleDenominacion[];
+  detalles: DetalleDenominacionResponse[];
   transferencias: Transferencia[];
   observaciones: string | null;
   base_efectivo: string;
-  usuario: number | null;
 }

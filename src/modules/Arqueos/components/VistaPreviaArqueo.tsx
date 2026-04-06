@@ -132,13 +132,15 @@ export const VistaPreviaArqueo = ({
           )}
 
           <div className="flex justify-end gap-2 pt-4">
-            <Button variant="ghost" onPress={close}>
+            <Button variant="danger-soft" onPress={close}>
               Cancelar
             </Button>
             <Button variant="primary" onPress={onConfirm} isDisabled={isSaving}>
               {isSaving ? "Guardando..." : "Confirmar y guardar"}
             </Button>
           </div>
+
+          
         </div>
       ))}
     </AppModal>

@@ -9,6 +9,11 @@ import { AyudaSumatoriaModal } from "./AyudaSumatoriaModal";
 import { VistaPreviaArqueo } from "./VistaPreviaArqueo";
 import { denominacionesList } from "../data/denominaciones";
 import { ArqueoRequest, Transferencia } from "../ArqueoTypes";
+import { ArqueoPDF } from "./ArqueoPdf";
+import { pdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+
+
 
 export const ArqueoForm = () => {
   const { user } = useAuth();
@@ -34,21 +39,48 @@ export const ArqueoForm = () => {
   const granTotalReal = totalEfectivoFisico + totalTransferencias;
   const diferencia = granTotalReal - totalFacturado;
 
+  
+
    useEffect(() => {
     if (arqueoCreado) {
-      alert("Arqueo guardado exitosamente");
-      // Opcional: resetear formulario
-      setResponsableNombre("");
-      setObservaciones("");
-      setDetalles(() => {
-        const initial: { [key: number]: number } = {};
-        denominacionesList.forEach((d) => (initial[d.valor] = 0));
-        return initial;
-      });
-      setTransferencias([]);
-      setTotalFacturado(0);
-    }
-  }, [arqueoCreado]);
+        const generarPDF = async () => {
+          // Mapear detalles para garantizar la estructura
+          const detallesMapeados = arqueoCreado.detalles.map(d => ({
+            denominacion: d.denominacion,
+            cantidad: d.cantidad,
+            subtotal: d.subtotal,
+          }));
+          const blob = await pdf(
+            <ArqueoPDF
+              cajeroNombre={user?.username || user?.email || 'Usuario'}
+              companyLogoUrl="../../../../public/logoEmpresa.png"
+              responsableNombre={arqueoCreado.responsable_nombre}
+              fecha={arqueoCreado.fecha}
+              hora={arqueoCreado.hora}
+              totalEfectivoFisico={arqueoCreado.total_efectivo_fisico}
+              totalTransferencias={arqueoCreado.total_transferencias}
+              granTotalReal={arqueoCreado.gran_total_real}
+              detalles={detallesMapeados}
+              transferencias={arqueoCreado.transferencias}
+              observaciones={arqueoCreado.observaciones || ''}
+            />
+          ).toBlob();
+          saveAs(blob, `arqueo_${arqueoCreado.fecha}.pdf`);
+        };
+        generarPDF();
+      
+        // Resetear formulario
+        setResponsableNombre("");
+        setObservaciones("");
+        setDetalles(() => {
+          const initial: { [key: number]: number } = {};
+          denominacionesList.forEach((d) => (initial[d.valor] = 0));
+          return initial;
+        });
+        setTransferencias([]);
+        setTotalFacturado(0);
+      }
+    }, [arqueoCreado,user]);
 
   const handleSubmit = () => {
     if (!user) {
@@ -101,7 +133,7 @@ export const ArqueoForm = () => {
         </Card.Header>
         <Card.Content>
           <div className="flex justify-end">
-            <Button variant="ghost" onPress={() => setIsAyudaOpen(true)}>
+            <Button variant="primary" onPress={() => setIsAyudaOpen(true)}>
               Abrir calculadora de ayuda
             </Button>
           </div>
