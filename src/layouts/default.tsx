@@ -14,12 +14,11 @@ export default function DefaultLayout({
       <footer className="w-full flex items-center justify-center py-3">
         <a
           className="flex items-center gap-1 text-current no-underline"
-          href="https://heroui.com?utm_source=vite-template"
           rel="noopener noreferrer"
-          target="_blank"
+          target=""
         >
-          <span className="text-muted">Powered by</span>
-          <p className="text-accent">HeroUI</p>
+          <span className="text-muted">Derechos reservador</span>
+          <p className="text-accent">CIS RX</p>
         </a>
       </footer>
     </div>

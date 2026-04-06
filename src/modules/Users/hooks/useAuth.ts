@@ -27,7 +27,7 @@ export const useAuth = () => {
         login(access, refresh);
       }
       
-      navigate('/estudios', { replace: true });
+      navigate('/arqueo', { replace: true });
     },
     onError: (error: any) => {
       const mensaje = error.response?.data?.detail || "Credenciales incorrectas";

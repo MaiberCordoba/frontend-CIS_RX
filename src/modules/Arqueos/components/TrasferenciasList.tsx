@@ -27,7 +27,7 @@ export const TransferenciasList = ({ transferencias, onChange }: Props) => {
   return (
     <div className="space-y-3">
       <div className="flex justify-end">
-        <Button size="sm" onPress={agregar}>
+        <Button className={'bg-primary'} size="sm" onPress={agregar}>
           Agregar transferencia
         </Button>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Kbd, Link, TextField, InputGroup } from "@heroui/react";
+import {Link } from "@heroui/react";
 import clsx from "clsx";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import {
-  SearchIcon,
   Logo,
 } from "@/components/icons";
 import { ActionButton } from "./global/ActionButton";
@@ -25,22 +24,6 @@ export const Navbar = () => {
     navigate('/login', { replace: true });
   };
 
-  const searchInput = (
-    <TextField aria-label="Search" type="search">
-      <InputGroup>
-        <InputGroup.Prefix>
-          <SearchIcon className="text-base text-muted pointer-events-none flex-shrink-0" />
-        </InputGroup.Prefix>
-        <InputGroup.Input className="text-sm" placeholder="Search..." />
-        <InputGroup.Suffix>
-          <Kbd className="hidden lg:inline-flex">
-            <Kbd.Abbr keyValue="command" />
-            <Kbd.Content>K</Kbd.Content>
-          </Kbd>
-        </InputGroup.Suffix>
-      </InputGroup>
-    </TextField>
-  );
 
   return (
     <nav className="sticky top-0 z-40 w-full border-b border-separator bg-background/70 backdrop-blur-lg">
@@ -80,9 +63,8 @@ export const Navbar = () => {
             </div>
           )}
           <ThemeSwitch />
-          <div className="hidden lg:flex">{searchInput}</div>
           <div className="hidden md:flex">
-            <ActionButton size='sm' variant="primary" onPress={handleLogout} icon={<LogOut size={16} />}>
+            <ActionButton size='sm' variant="primary" onPress={handleLogout} icon={<LogOut size={18}/>}>
               Salir
             </ActionButton>
           </div>
@@ -124,7 +106,6 @@ export const Navbar = () => {
 
       {isMenuOpen && (
         <div className="border-t border-separator sm:hidden">
-          <div className="p-4">{searchInput}</div>
           <ul className="flex flex-col gap-2 px-4 pb-4">
             {siteConfig.navMenuItems.map((item, index) => (
               <li key={`${item.label}-${index}`}>

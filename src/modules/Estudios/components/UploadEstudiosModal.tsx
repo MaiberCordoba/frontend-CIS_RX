@@ -1,5 +1,5 @@
 // src/modules/Estudios/components/UploadEstudiosModal.tsx
-import { Button, Input, Spinner } from "@heroui/react";
+import { Button, Input, Spinner, toast } from "@heroui/react";
 import { useState } from "react";
 import { AppModal } from "../../../components/global/AppModal";
 import { useUploadEstudios } from "../hooks/useUploadEstudios";
@@ -15,7 +15,7 @@ export const UploadEstudiosModal = ({ isOpen, onOpenChange }: Props) => {
 
   const handleSubmit = (close: () => void) => {
     if (!file) {
-      alert("Seleccione un archivo Excel");
+      toast.warning("Seleccione un archivo Excel");
       return;
     }
     upload(file, {

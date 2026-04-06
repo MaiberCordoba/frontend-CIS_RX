@@ -1,6 +1,6 @@
 // src/modules/Arqueos/components/ArqueoForm.tsx
 import { useEffect, useState } from "react";
-import { Button, Card, Input, Label, TextArea, TextField } from "@heroui/react";
+import { Button, Card, Input, Label, TextArea, TextField, toast } from "@heroui/react";
 import { useAuth } from "@/context/AuthContext";
 import { useArqueo } from "../hooks/UseArqueo";
 import { DenominacionesGrid } from "./DemominacionesGrid";
@@ -12,8 +12,7 @@ import { ArqueoRequest, Transferencia } from "../ArqueoTypes";
 import { ArqueoPDF } from "./ArqueoPdf";
 import { pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-
-
+import { User } from "lucide-react";
 
 export const ArqueoForm = () => {
   const { user } = useAuth();
@@ -84,15 +83,20 @@ export const ArqueoForm = () => {
 
   const handleSubmit = () => {
     if (!user) {
-      alert("Debes iniciar sesión");
+      toast.danger("Debes iniciar sesión");
       return;
     }
     if (!responsableNombre.trim()) {
-      alert("Ingresa el nombre del responsable");
+      toast.danger("Ingrese el nombre del responsable", {
+              description:
+                "El nombre de la persona que recibe el arqueo es necesario dentro del arqueo",
+              indicator: <User />, })
       return;
     }
     if (totalFacturado <= 0) {
-      alert("Ingresa el total facturado del día (según el sistema de facturación)");
+      toast.danger("Ingresa el total facturado del día",{
+        description:'ingrese la cantidad de dinero segun la facturacion Nota:(revisar calculadora de ayuda)'
+      });
       return;
     }
     setIsVistaPreviaOpen(true);
@@ -133,7 +137,7 @@ export const ArqueoForm = () => {
         </Card.Header>
         <Card.Content>
           <div className="flex justify-end">
-            <Button variant="primary" onPress={() => setIsAyudaOpen(true)}>
+            <Button className={'bg-primary'} variant="primary" size="sm" onPress={() => setIsAyudaOpen(true)}>
               Abrir calculadora de ayuda
             </Button>
           </div>
@@ -206,7 +210,7 @@ export const ArqueoForm = () => {
               </div>
 
               <div className="flex justify-end">
-                <Button variant="primary" onPress={handleSubmit} isDisabled={isPending}>
+                <Button className={'bg-primary'} variant="primary" size="sm" onPress={handleSubmit} isDisabled={isPending}>
                   Revisar y guardar
                 </Button>
               </div>
