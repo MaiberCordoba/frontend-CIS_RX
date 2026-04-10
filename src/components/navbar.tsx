@@ -39,8 +39,10 @@ export const Navbar = () => {
       <header className="mx-auto flex h-16 max-w-[1280px] items-center justify-between gap-4 px-6">
         <div className="flex items-center gap-4">
           <a className="flex items-center gap-1" href="/">
-            <Logo />
-            <p className="font-bold text-inherit">CIS RX</p>
+            <p className="text-xl font-black tracking-tighter transition-colors">
+              <span className="text-[#1565AE]">CIS</span> 
+              <span className="text-slate-700 dark:text-slate-300 ml-1">RX</span>
+            </p>
           </a>
           <ul className="hidden lg:flex gap-4 ml-2">
             {filteredNavItems.map((item) => (
