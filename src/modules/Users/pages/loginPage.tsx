@@ -7,7 +7,6 @@ import {
 } from "@heroui/react"; 
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
-import { Lock, User } from "lucide-react";
 
 export default function LoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm(); // Añadimos errors

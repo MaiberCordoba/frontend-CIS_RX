@@ -16,7 +16,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className }) => {
       | "light"
       | "dark"
       | null;
-    const initialTheme = savedTheme || "dark";
+    const initialTheme = savedTheme || "light";
 
     setTheme(initialTheme);
     root.classList.toggle("dark", initialTheme === "dark");

@@ -12,7 +12,7 @@ export const ProtectedRoute = ({ allowedRoles }: Props) => {
   if (loading) return <div className="flex h-screen items-center justify-center">Cargando...</div>;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (allowedRoles && user && !allowedRoles.includes(user.rol)) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/arqueo" replace />;
   }
   return <Outlet />;
 };

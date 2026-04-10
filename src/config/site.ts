@@ -30,10 +30,6 @@ export const siteConfig = {
       label: "Usuarios",
       href: "/usuarios",
     },
-    {
-      label: "Cerrar sesion",
-      href: "/projects",
-    },
   ],
   links: {
   },
