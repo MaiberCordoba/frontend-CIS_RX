@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@heroui/react";
+import { Button, Link } from "@heroui/react";
 import clsx from "clsx";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,8 @@ import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Logo } from "@/components/icons";
 import { ActionButton } from "./global/ActionButton";
-import { LogOut } from "lucide-react";
+import { LogOut, UserIcon } from "lucide-react";
+import { PerfilModal } from "@/modules/Users/components/PerfilModal";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,6 +23,8 @@ export const Navbar = () => {
     logout();
     navigate('/login', { replace: true });
   };
+
+  const [isPerfilOpen, setIsPerfilOpen] = useState(false);
 
   // Filtrar elementos del menú según el rol
   const filteredNavItems = siteConfig.navItems.filter((item) => {
@@ -56,17 +59,29 @@ export const Navbar = () => {
           </ul>
         </div>
 
+
+        
+
         <div className="hidden sm:flex items-center gap-2">
           {isAuthenticated && user && (
-            <div className="flex items-center gap-2 mr-2">
-              <span className="text-sm hidden md:inline">
-                {user.username || `Usuario #${user.id}`}
-              </span>
-              <span className="text-xs text-muted hidden md:inline ml-1">
-                ({user.rol})
-              </span>
-            </div>
-          )}
+          <div className="flex items-center gap-2 mr-2">
+            <Button
+              isIconOnly
+              variant="ghost"
+              size="sm"
+              onPress={() => setIsPerfilOpen(true)}
+              aria-label="Mi perfil"
+            >
+              <UserIcon size={16} />
+            </Button>
+            <span className="text-sm hidden md:inline">
+              {user.username || `Usuario #${user.id}`}
+            </span>
+            <span className="text-xs text-muted hidden md:inline ml-1">
+              ({user.rol})
+            </span>
+          </div>
+        )}
           <ThemeSwitch />
           <div className="hidden md:flex">
             <ActionButton size="sm" variant="primary" onPress={handleLogout} icon={<LogOut size={18} />}>
@@ -112,7 +127,7 @@ export const Navbar = () => {
       {isMenuOpen && (
         <div className="border-t border-separator sm:hidden">
           <ul className="flex flex-col gap-2 px-4 pb-4">
-            {/* Mostrar información del usuario en menú móvil */}
+            {/* Información del usuario */}
             {isAuthenticated && user && (
               <li className="py-2 border-b border-separator">
                 <div className="flex flex-col">
@@ -123,6 +138,23 @@ export const Navbar = () => {
                 </div>
               </li>
             )}
+      
+            {/* 👇 NUEVO: Botón "Mi Perfil" para móvil */}
+            {isAuthenticated && user && (
+              <li>
+                <button
+                  onClick={() => {
+                    setIsPerfilOpen(true);
+                    setIsMenuOpen(false); // Cierra el menú al abrir el modal
+                  }}
+                  className="flex items-center gap-2 w-full py-2 text-foreground text-lg"
+                >
+                  <UserIcon size={18} />
+                  Mi Perfil
+                </button>
+              </li>
+            )}
+      
             {/* Enlaces del menú */}
             {filteredNavItems.map((item, index) => (
               <li key={`${item.label}-${index}`}>
@@ -141,7 +173,8 @@ export const Navbar = () => {
                 </Link>
               </li>
             ))}
-            {/* Botón de logout en menú móvil */}
+      
+            {/* Botón de logout */}
             <li className="mt-2 pt-2 border-t border-separator">
               <button
                 onClick={handleLogout}
@@ -154,6 +187,9 @@ export const Navbar = () => {
           </ul>
         </div>
       )}
+
+      <PerfilModal isOpen={isPerfilOpen} onOpenChange={setIsPerfilOpen} />
+
     </nav>
   );
 };

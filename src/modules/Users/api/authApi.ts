@@ -22,7 +22,7 @@ export const createUsuario = async (data: Omit<Usuario, 'id'>): Promise<Usuario>
 };
 
 export const updateUsuario = async (id: number, data: Partial<Usuario>): Promise<Usuario> => {
-  const response = await baseApi.put<Usuario>(`usuarios/${id}/`, data);
+  const response = await baseApi.patch<Usuario>(`usuarios/${id}/`, data);
   return response.data;
 };
 
