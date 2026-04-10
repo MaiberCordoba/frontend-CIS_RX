@@ -13,8 +13,8 @@ export const siteConfig = {
       href: "/estudios",
     },
     {
-      label: "Inventario",
-      href: "/pricing",
+      label: "Usuarios",
+      href: "/usuarios",
     },
   ],
   navMenuItems: [
@@ -27,8 +27,8 @@ export const siteConfig = {
       href: "/estudios",
     },
     {
-      label: "Inventario",
-      href: "/projects",
+      label: "Usuarios",
+      href: "/usuarios",
     },
     {
       label: "Cerrar sesion",

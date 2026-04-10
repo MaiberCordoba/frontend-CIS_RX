@@ -2,17 +2,17 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
-export const ProtectedRoute = () => {
-  const { isAuthenticated, loading } = useAuth();
+interface Props {
+  allowedRoles?: ('Facturador' | 'Jefe')[];
+}
 
-  // Mientras carga, no mostrar nada o un spinner
-  if (loading) {
-    return <div className="flex h-screen items-center justify-center">Cargando...</div>;
+export const ProtectedRoute = ({ allowedRoles }: Props) => {
+  const { isAuthenticated, loading, user } = useAuth();
+
+  if (loading) return <div className="flex h-screen items-center justify-center">Cargando...</div>;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (allowedRoles && user && !allowedRoles.includes(user.rol)) {
+    return <Navigate to="/" replace />;
   }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
   return <Outlet />;
 };

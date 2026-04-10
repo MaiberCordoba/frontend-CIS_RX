@@ -1,16 +1,15 @@
+// src/components/navbar.tsx
 "use client";
 
 import { useState } from "react";
-import {Link } from "@heroui/react";
+import { Link } from "@heroui/react";
 import clsx from "clsx";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import {
-  Logo,
-} from "@/components/icons";
+import { Logo } from "@/components/icons";
 import { ActionButton } from "./global/ActionButton";
 import { LogOut } from "lucide-react";
 
@@ -24,6 +23,13 @@ export const Navbar = () => {
     navigate('/login', { replace: true });
   };
 
+  // Filtrar elementos del menú según el rol
+  const filteredNavItems = siteConfig.navItems.filter((item) => {
+    if (item.label === "Usuarios") {
+      return user?.rol === "Jefe";
+    }
+    return true;
+  });
 
   return (
     <nav className="sticky top-0 z-40 w-full border-b border-separator bg-background/70 backdrop-blur-lg">
@@ -34,7 +40,7 @@ export const Navbar = () => {
             <p className="font-bold text-inherit">CIS RX</p>
           </a>
           <ul className="hidden lg:flex gap-4 ml-2">
-            {siteConfig.navItems.map((item) => (
+            {filteredNavItems.map((item) => (
               <li key={item.href}>
                 <a
                   className={clsx(
@@ -51,7 +57,6 @@ export const Navbar = () => {
         </div>
 
         <div className="hidden sm:flex items-center gap-2">
-          {/* Mostrar usuario autenticado */}
           {isAuthenticated && user && (
             <div className="flex items-center gap-2 mr-2">
               <span className="text-sm hidden md:inline">
@@ -64,7 +69,7 @@ export const Navbar = () => {
           )}
           <ThemeSwitch />
           <div className="hidden md:flex">
-            <ActionButton size='sm' variant="primary" onPress={handleLogout} icon={<LogOut size={18}/>}>
+            <ActionButton size="sm" variant="primary" onPress={handleLogout} icon={<LogOut size={18} />}>
               Salir
             </ActionButton>
           </div>
@@ -107,16 +112,28 @@ export const Navbar = () => {
       {isMenuOpen && (
         <div className="border-t border-separator sm:hidden">
           <ul className="flex flex-col gap-2 px-4 pb-4">
-            {siteConfig.navMenuItems.map((item, index) => (
+            {/* Mostrar información del usuario en menú móvil */}
+            {isAuthenticated && user && (
+              <li className="py-2 border-b border-separator">
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium">
+                    {user.username || `Usuario #${user.id}`}
+                  </span>
+                  <span className="text-xs text-muted">({user.rol})</span>
+                </div>
+              </li>
+            )}
+            {/* Enlaces del menú */}
+            {filteredNavItems.map((item, index) => (
               <li key={`${item.label}-${index}`}>
                 <Link
                   className={clsx(
                     "block py-2 text-lg no-underline",
                     index === 2
                       ? "text-accent"
-                      : index === siteConfig.navMenuItems.length - 1
-                        ? "text-danger"
-                        : "text-foreground",
+                      : index === filteredNavItems.length - 1
+                      ? "text-danger"
+                      : "text-foreground",
                   )}
                   href={item.href}
                 >
@@ -124,6 +141,16 @@ export const Navbar = () => {
                 </Link>
               </li>
             ))}
+            {/* Botón de logout en menú móvil */}
+            <li className="mt-2 pt-2 border-t border-separator">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 w-full py-2 text-danger text-lg"
+              >
+                <LogOut size={18} />
+                Salir
+              </button>
+            </li>
           </ul>
         </div>
       )}

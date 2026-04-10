@@ -7,6 +7,7 @@ import EstudiosPage from "./modules/Estudios/pages/EstudiosPage";
 import DefaultLayout from "./layouts/default";
 import ArqueoPage from "./modules/Arqueos/pages/ArqueoPage";
 import { Toast } from "@heroui/react";
+import UsersPage from "./modules/Users/pages/UsersPage";
 
 function App() {
   return (
@@ -14,6 +15,10 @@ function App() {
 
       <Toast.Provider/>
       <Routes>
+
+        <Route element={<ProtectedRoute allowedRoles={['Jefe']} />}>
+          <Route path="/usuarios" element={<DefaultLayout><UsersPage /></DefaultLayout>} />
+        </Route>
 
         <Route path="/login" element={<LoginPage />} />
         <Route element={<ProtectedRoute />}>
