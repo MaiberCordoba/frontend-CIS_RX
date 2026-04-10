@@ -69,7 +69,7 @@ export const AyudaSumatoriaModal = ({
           {/* Botones rápidos */}
           <div className="flex flex-wrap gap-2">
             {valoresComunes.map((val) => (
-              <Button key={val} size="sm" onPress={() => agregarValor(val)}>
+              <Button className={'bg-primary'} key={val} size="sm" onPress={() => agregarValor(val)}>
                 +${val.toLocaleString()}
               </Button>
             ))}
@@ -87,7 +87,8 @@ export const AyudaSumatoriaModal = ({
                 onChange={(e) => setValorPersonalizado(e.target.value)}
               />
             </div>
-            <Button
+            <Button 
+              className={'bg-primary'}
                 isIconOnly 
                 onPress={() => {
                     const num = parseFloat(valorPersonalizado);
