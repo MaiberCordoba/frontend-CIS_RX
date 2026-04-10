@@ -29,9 +29,5 @@ export const useAuth = () => {
       
       navigate('/arqueo', { replace: true });
     },
-    onError: (error: any) => {
-      const mensaje = error.response?.data?.detail || "Credenciales incorrectas";
-      alert(mensaje);
-    }
   });
 };
