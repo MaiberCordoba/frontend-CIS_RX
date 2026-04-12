@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { Logo } from "@/components/icons";
 import { ActionButton } from "./global/ActionButton";
 import { LogOut, UserIcon } from "lucide-react";
 import { PerfilModal } from "@/modules/Users/components/PerfilModal";

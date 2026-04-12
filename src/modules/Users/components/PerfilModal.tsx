@@ -148,7 +148,7 @@ export const PerfilModal = ({ isOpen, onOpenChange }: Props) => {
             </div>
 
             <div className="flex justify-end gap-2 mt-4">
-              <Button variant="ghost" onPress={close} isDisabled={isUpdating}>
+              <Button variant="danger" onPress={close} isDisabled={isUpdating}>
                 Cancelar
               </Button>
               <Button type="submit" className="bg-primary text-white" isDisabled={isUpdating}>
