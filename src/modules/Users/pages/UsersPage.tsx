@@ -6,11 +6,14 @@ import { ActionButton } from "@/components/global/ActionButton";
 import { Pencil, Trash2, Plus } from "lucide-react";
 import { DataTable } from "@/components/global/DataTable.tsx/DataTable";
 import { useUsuarios } from "../hooks/UseUsuarios";
+import { ConfirmModal } from "@/components/global/ConfirmModal";
 
 export default function UsersPage() {
   const { data: users, isLoading, createUsuario, updateUsuario, deleteUsuario, isCreating, isUpdating, isDeleting } = useUsuarios();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<Usuario | null>(null);
+  const [userToDelete, setUserToDelete] = useState<Usuario | null>(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleOpenCreate = () => {
     setSelectedUser(null);
@@ -22,10 +25,17 @@ export default function UsersPage() {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (id: number) => {
-    if (confirm("¿Eliminar este usuario?")) {
-      deleteUsuario(id);
+  const handleDeleteClick = (user: Usuario) => {
+    setUserToDelete(user);
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (userToDelete) {
+      deleteUsuario(userToDelete.id);
+      setUserToDelete(null);
     }
+    setIsConfirmOpen(false);
   };
 
   const handleSave = (data: Partial<Usuario>) => {
@@ -71,7 +81,7 @@ export default function UsersPage() {
                 <Button isIconOnly variant="ghost" size="sm" onPress={() => handleOpenEdit(user)}>
                   <Pencil size={16} className="text-primary" />
                 </Button>
-                <Button isIconOnly variant="ghost" size="sm" onPress={() => handleDelete(user.id)} isPending={isDeleting}>
+                <Button isIconOnly variant="ghost" size="sm" onPress={() => handleDeleteClick(user)} isPending={isDeleting}>
                   <Trash2 size={16} className="text-danger" />
                 </Button>
               </div>
@@ -86,6 +96,14 @@ export default function UsersPage() {
         selectedUser={selectedUser}
         onSave={handleSave}
         isSaving={isCreating || isUpdating}
+      />
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onOpenChange={setIsConfirmOpen}
+        title="Confirmar eliminación"
+        message={`¿Estás seguro de eliminar al usuario "${userToDelete?.username}"? Esta acción no se puede deshacer.`}
+        onConfirm={handleConfirmDelete}
+        isConfirming={isDeleting}
       />
     </div>
   );
