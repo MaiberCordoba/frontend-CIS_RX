@@ -74,15 +74,6 @@ export const ArqueoForm = () => {
         generarPDF();
       
         // Resetear formulario
-        setResponsableNombre("");
-        setObservaciones("");
-        setDetalles(() => {
-          const initial: { [key: number]: number } = {};
-          denominacionesList.forEach((d) => (initial[d.valor] = 0));
-          return initial;
-        });
-        setTransferencias([]);
-        setTotalFacturado(0);
       }
     }, [arqueoCreado,user]);
 
