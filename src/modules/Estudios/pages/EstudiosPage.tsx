@@ -11,7 +11,7 @@ import { DataTable } from "@/components/global/DataTable.tsx/DataTable";
 import { useAuth } from "@/context/AuthContext";
 
 export default function EstudiosPage() {
-  const { user } = useAuth(); // Obtener usuario autenticado
+  const { user } = useAuth();
   const {
     data,
     isLoading,
@@ -26,10 +26,8 @@ export default function EstudiosPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEstudio, setSelectedEstudio] = useState<Estudio | null>(null);
 
-  // Verificar si el usuario tiene rol Jefe
   const isJefe = user?.rol === "Jefe";
 
-  // Función para mostrar advertencia si no es Jefe
   const checkRoleOrWarn = (action: () => void) => {
     if (isJefe) {
       action();
@@ -46,6 +44,12 @@ export default function EstudiosPage() {
   };
 
   const handleOpenEdit = (estudio: Estudio) => {
+    if (!isJefe) {
+      toast.danger("Acceso denegado", {
+        description: "Solo los usuarios con rol Jefe pueden editar estudios.",
+      });
+      return;
+    }
     setSelectedEstudio(estudio);
     setIsModalOpen(true);
   };
@@ -69,21 +73,24 @@ export default function EstudiosPage() {
     { id: "acciones", label: "ACCIONES", align: "end" as const },
   ];
 
+  // Botones responsivos: en móvil se apilan, en escritorio en línea
   const toolbarButtons = (
-    <>
-      <ActionButton 
-        onPress={() => checkRoleOrWarn(() => setIsUploadModalOpen(true))} 
+    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+      <ActionButton
+        onPress={() => checkRoleOrWarn(() => setIsUploadModalOpen(true))}
         icon={<Upload size={18} />}
+        className="w-full sm:w-auto"
       >
         Carga masiva
       </ActionButton>
-      <ActionButton 
-        onPress={() => checkRoleOrWarn(handleOpenCreate)} 
+      <ActionButton
+        onPress={() => checkRoleOrWarn(handleOpenCreate)}
         icon={<Plus size={18} />}
+        className="w-full sm:w-auto"
       >
         Nuevo Estudio
       </ActionButton>
-    </>
+    </div>
   );
 
   return (
