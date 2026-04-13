@@ -140,13 +140,13 @@ export const Navbar = () => {
               </li>
             )}
       
-            {/* 👇 NUEVO: Botón "Mi Perfil" para móvil */}
+            {/* Botón "Mi Perfil" para móvil */}
             {isAuthenticated && user && (
               <li>
                 <button
                   onClick={() => {
                     setIsPerfilOpen(true);
-                    setIsMenuOpen(false); // Cierra el menú al abrir el modal
+                    setIsMenuOpen(false);
                   }}
                   className="flex items-center gap-2 w-full py-2 text-foreground text-lg"
                 >
@@ -156,7 +156,7 @@ export const Navbar = () => {
               </li>
             )}
       
-            {/* Enlaces del menú */}
+            {/* Enlaces del menú - ahora con onPress para cerrar */}
             {filteredNavItems.map((item, index) => (
               <li key={`${item.label}-${index}`}>
                 <Link
@@ -169,6 +169,7 @@ export const Navbar = () => {
                       : "text-foreground",
                   )}
                   href={item.href}
+                  onPress={() => setIsMenuOpen(false)} // 👈 Cierra el menú al hacer clic
                 >
                   {item.label}
                 </Link>
@@ -178,7 +179,10 @@ export const Navbar = () => {
             {/* Botón de logout */}
             <li className="mt-2 pt-2 border-t border-separator">
               <button
-                onClick={handleLogout}
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false); // 👈 Cierra el menú al hacer logout
+                }}
                 className="flex items-center gap-2 w-full py-2 text-danger text-lg"
               >
                 <LogOut size={18} />

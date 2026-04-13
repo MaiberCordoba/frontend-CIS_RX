@@ -12,14 +12,14 @@ baseApi.interceptors.request.use((config) => {
   return config;
 });
 
-// INTERCEPTOR DE RESPUESTA: El "Portero" que te saca si el token expira
 baseApi.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Si el servidor responde 401 (No autorizado)
-    if (error.response && error.response.status === 401) {
-      localStorage.clear(); // Limpiamos todo de un golpe
-      window.location.href = '/login'; // Salto forzado al login
+    const originalRequest = error.config;
+    const isLoginRequest = originalRequest?.url?.includes('login'); // <- más flexible
+    if (error.response && error.response.status === 401 && !isLoginRequest) {
+      localStorage.clear();
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }

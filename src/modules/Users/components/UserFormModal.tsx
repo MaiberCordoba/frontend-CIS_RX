@@ -152,7 +152,7 @@ export const UserFormModal = ({ isOpen, onOpenChange, selectedUser, onSave, isSa
 
             {/* Botones */}
             <div className="md:col-span-2 flex justify-end gap-2 mt-4">
-              <Button variant="ghost" onPress={close} isDisabled={isSaving}>
+              <Button variant="danger" onPress={close} isDisabled={isSaving}>
                 Cancelar
               </Button>
               <Button type="submit" className="bg-primary text-white" isDisabled={isSaving}>

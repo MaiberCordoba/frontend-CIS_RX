@@ -82,7 +82,6 @@ export const PerfilModal = ({ isOpen, onOpenChange }: Props) => {
       {
         onSuccess: (updatedUser) => {
           updateUser(updatedUser);
-          toast.success("Éxito", { description: "Tu información ha sido actualizada correctamente" });
           onOpenChange(false);
           methods.reset({ ...updatedUser, password: "", confirm_password: "" });
         },
