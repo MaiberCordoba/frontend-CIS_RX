@@ -13,6 +13,8 @@ import { ArqueoPDF } from "./ArqueoPdf";
 import { pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { User } from "lucide-react";
+import { LOGO_BASE64 } from "@/assets/logobase64";
+import { AyudaVueltasModal } from "./CalculadoraVueltasModal";
 
 export const ArqueoForm = () => {
   const { user } = useAuth();
@@ -38,7 +40,7 @@ export const ArqueoForm = () => {
   const granTotalReal = totalEfectivoFisico + totalTransferencias;
   const diferencia = granTotalReal - totalFacturado;
 
-  
+  const [isVueltasOpen, setIsVueltasOpen] = useState(false);
 
    useEffect(() => {
     if (arqueoCreado) {
@@ -52,7 +54,7 @@ export const ArqueoForm = () => {
           const blob = await pdf(
             <ArqueoPDF
               cajeroNombre={user?.username || user?.email || 'Usuario'}
-              companyLogoUrl="../../../../public/logoEmpresa.png"
+              companyLogoUrl={LOGO_BASE64}
               responsableNombre={arqueoCreado.responsable_nombre}
               fecha={arqueoCreado.fecha}
               hora={arqueoCreado.hora}
@@ -136,9 +138,23 @@ export const ArqueoForm = () => {
           </Card.Description>
         </Card.Header>
         <Card.Content>
-          <div className="flex justify-end">
-            <Button className={'bg-primary'} variant="primary" size="sm" onPress={() => setIsAyudaOpen(true)}>
-              Abrir calculadora de ayuda
+          <div className="flex justify-end gap-3 items-center">
+            <Button 
+              className={'bg-primary'}
+              variant="primary" // Menos peso visual para la ayuda general
+              size='sm' // Usando número según el error anterior de types
+              onPress={() => setIsAyudaOpen(true)}
+            >
+              Ayuda facturas efectivo
+            </Button>
+
+            <Button 
+              variant="primary" 
+              size='sm' 
+              className=" bg-primary"
+              onPress={() => setIsVueltasOpen(true)}
+            >
+              Calculadora de vueltas
             </Button>
           </div>
         </Card.Content>
@@ -190,6 +206,7 @@ export const ArqueoForm = () => {
                   <Label htmlFor="responsable">Responsable (quien recibe)</Label>
                   <Input
                     id="responsable"
+                    placeholder="Encargado de recibir arqueo"
                     value={responsableNombre}
                     onChange={(e) => setResponsableNombre(e.target.value)}
                   />
@@ -241,6 +258,7 @@ export const ArqueoForm = () => {
         onConfirm={confirmarGuardado}
         isSaving={isPending}
       />
+      <AyudaVueltasModal isOpen={isVueltasOpen} onOpenChange={setIsVueltasOpen} />
     </div>
   );
 };
