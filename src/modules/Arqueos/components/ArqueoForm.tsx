@@ -51,9 +51,12 @@ export const ArqueoForm = () => {
             cantidad: d.cantidad,
             subtotal: d.subtotal,
           }));
+
+        const nombreCompleto = `${user?.first_name || ''} ${user?.last_name || ''}`.trim();
+        const cajeroNombreFinal = nombreCompleto || user?.username || 'Usuario';
           const blob = await pdf(
             <ArqueoPDF
-              cajeroNombre={user?.username || user?.email || 'Usuario'}
+              cajeroNombre={cajeroNombreFinal}
               companyLogoUrl={LOGO_BASE64}
               responsableNombre={arqueoCreado.responsable_nombre}
               fecha={arqueoCreado.fecha}
