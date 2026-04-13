@@ -138,20 +138,20 @@ export const ArqueoForm = () => {
           </Card.Description>
         </Card.Header>
         <Card.Content>
-          <div className="flex justify-end gap-3 items-center">
+          <div className="flex flex-col sm:flex-row justify-end gap-3">
             <Button 
-              className={'bg-primary'}
-              variant="primary" // Menos peso visual para la ayuda general
-              size='sm' // Usando número según el error anterior de types
+              className="bg-primary w-full sm:w-auto"
+              variant="primary"
+              size="sm"
               onPress={() => setIsAyudaOpen(true)}
             >
               Ayuda facturas efectivo
             </Button>
-
+            
             <Button 
-              variant="primary" 
-              size='sm' 
-              className=" bg-primary"
+              className="bg-primary w-full sm:w-auto"
+              variant="primary"
+              size="sm"
               onPress={() => setIsVueltasOpen(true)}
             >
               Calculadora de vueltas
