@@ -13,7 +13,7 @@ import { ArqueoPDF } from "./ArqueoPdf";
 import { pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { User } from "lucide-react";
-import { LOGO_BASE64 } from "@/assets/logobase64";
+import { LOGO_BASE64 } from "../assets/logoBase64";
 import { AyudaVueltasModal } from "./CalculadoraVueltasModal";
 
 export const ArqueoForm = () => {
