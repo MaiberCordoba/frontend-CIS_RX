@@ -1,5 +1,5 @@
 // src/modules/Estudios/pages/EstudiosPage.tsx
-import { Table, Button } from "@heroui/react";
+import { Table, Button, toast } from "@heroui/react";
 import { Pencil, Upload, Plus } from "lucide-react";
 import { useState } from "react";
 import { useEstudios } from "../hooks/useEstudios";
@@ -8,8 +8,10 @@ import { EstudioFormModal } from "../components/EstudioFormModal";
 import { UploadEstudiosModal } from "../components/UploadEstudiosModal";
 import { ActionButton } from "@/components/global/ActionButton";
 import { DataTable } from "@/components/global/DataTable.tsx/DataTable";
+import { useAuth } from "@/context/AuthContext";
 
 export default function EstudiosPage() {
+  const { user } = useAuth(); // Obtener usuario autenticado
   const {
     data,
     isLoading,
@@ -23,6 +25,20 @@ export default function EstudiosPage() {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEstudio, setSelectedEstudio] = useState<Estudio | null>(null);
+
+  // Verificar si el usuario tiene rol Jefe
+  const isJefe = user?.rol === "Jefe";
+
+  // Función para mostrar advertencia si no es Jefe
+  const checkRoleOrWarn = (action: () => void) => {
+    if (isJefe) {
+      action();
+    } else {
+      toast.danger("Acceso denegado", {
+        description: "Solo los usuarios con rol Jefe pueden realizar esta acción.",
+      });
+    }
+  };
 
   const handleOpenCreate = () => {
     setSelectedEstudio(null);
@@ -53,31 +69,37 @@ export default function EstudiosPage() {
     { id: "acciones", label: "ACCIONES", align: "end" as const },
   ];
 
-    const toolbarButtons = (
-      <>
-        <ActionButton onPress={() => setIsUploadModalOpen(true)} icon={<Upload size={18} />}>
-          Carga masiva
-        </ActionButton>
-        <ActionButton onPress={handleOpenCreate} icon={<Plus size={18} />}>
-          Nuevo Estudio
-        </ActionButton>
-      </>
-    );
+  const toolbarButtons = (
+    <>
+      <ActionButton 
+        onPress={() => checkRoleOrWarn(() => setIsUploadModalOpen(true))} 
+        icon={<Upload size={18} />}
+      >
+        Carga masiva
+      </ActionButton>
+      <ActionButton 
+        onPress={() => checkRoleOrWarn(handleOpenCreate)} 
+        icon={<Plus size={18} />}
+      >
+        Nuevo Estudio
+      </ActionButton>
+    </>
+  );
 
   return (
-    <div className="flex flex-col gap-4"> {/* Reducido de gap-6 a gap-4 */}
+    <div className="flex flex-col gap-4">
       <DataTable
         data={data ?? []}
         columns={columns}
         isLoading={isLoading}
         ariaLabel="Tabla de precios de estudios"
-        title="Catálogo de Estudios"  // 👈 Título integrado
+        title="Catálogo de Estudios"
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         toolbarButtons={toolbarButtons}
         renderRow={(estudio: Estudio) => (
           <Table.Row key={estudio.id}>
-            <Table.Cell className="font-bold text-primary  dark:text-gray-400 whitespace-nowrap">
+            <Table.Cell className="font-bold text-primary dark:text-gray-400 whitespace-nowrap">
               {estudio.codigo}
             </Table.Cell>
             <Table.Cell className="font-medium whitespace-nowrap">{estudio.nombre}</Table.Cell>
