@@ -1,6 +1,6 @@
 // src/modules/Estudios/pages/EstudiosPage.tsx
 import { Table, Button, toast } from "@heroui/react";
-import { Pencil, Upload, Plus } from "lucide-react";
+import { Pencil, Upload, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useEstudios } from "../hooks/useEstudios";
 import { Estudio } from "../EstudiosType";
@@ -9,6 +9,7 @@ import { UploadEstudiosModal } from "../components/UploadEstudiosModal";
 import { ActionButton } from "@/components/global/ActionButton";
 import { DataTable } from "@/components/global/DataTable.tsx/DataTable";
 import { useAuth } from "@/context/AuthContext";
+import { ConfirmModal } from "@/components/global/ConfirmModal";
 
 export default function EstudiosPage() {
   const { user } = useAuth();
@@ -19,12 +20,16 @@ export default function EstudiosPage() {
     setSearchTerm,
     createEstudio,
     updateEstudio,
+    deleteEstudio,    // 👈 Nueva función
     isSaving,
+    isDeleting,       // 👈 Estado de carga para eliminar
   } = useEstudios();
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEstudio, setSelectedEstudio] = useState<Estudio | null>(null);
+  const [estudioToDelete, setEstudioToDelete] = useState<Estudio | null>(null); // 👈 Para confirmar eliminación
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false); // 👈 Modal de confirmación
 
   const isJefe = user?.rol === "Jefe";
 
@@ -54,6 +59,27 @@ export default function EstudiosPage() {
     setIsModalOpen(true);
   };
 
+  // 👇 Función para abrir el modal de confirmación de eliminación
+  const handleDeleteClick = (estudio: Estudio) => {
+    if (!isJefe) {
+      toast.danger("Acceso denegado", {
+        description: "Solo los usuarios con rol Jefe pueden eliminar estudios.",
+      });
+      return;
+    }
+    setEstudioToDelete(estudio);
+    setIsConfirmOpen(true);
+  };
+
+  // 👇 Confirmar eliminación
+  const handleConfirmDelete = () => {
+    if (estudioToDelete) {
+      deleteEstudio(estudioToDelete.id);
+      setEstudioToDelete(null);
+    }
+    setIsConfirmOpen(false);
+  };
+
   const handleSave = (data: Partial<Estudio>) => {
     if (selectedEstudio?.id) {
       updateEstudio({ id: selectedEstudio.id, estudio: data });
@@ -73,8 +99,8 @@ export default function EstudiosPage() {
     { id: "acciones", label: "ACCIONES", align: "end" as const },
   ];
 
-  // Botones responsivos: en móvil se apilan, en escritorio en línea
-  const toolbarButtons = (
+  // Botones responsivos: solo visibles para Jefe
+  const toolbarButtons = isJefe ? (
     <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
       <ActionButton
         onPress={() => checkRoleOrWarn(() => setIsUploadModalOpen(true))}
@@ -91,7 +117,7 @@ export default function EstudiosPage() {
         Nuevo Estudio
       </ActionButton>
     </div>
-  );
+  ) : null;
 
   return (
     <div className="flex flex-col gap-4">
@@ -133,6 +159,18 @@ export default function EstudiosPage() {
                 >
                   <Pencil size={16} />
                 </Button>
+                {/* Botón eliminar: solo para Jefe */}
+                {isJefe && (
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    className="bg-transparent text-danger hover:bg-danger/10"
+                    onPress={() => handleDeleteClick(estudio)}
+                    aria-label="Eliminar estudio"
+                  >
+                    <Trash2 size={16} />
+                  </Button>
+                )}
               </div>
             </Table.Cell>
           </Table.Row>
@@ -149,6 +187,16 @@ export default function EstudiosPage() {
       />
 
       <UploadEstudiosModal isOpen={isUploadModalOpen} onOpenChange={setIsUploadModalOpen} />
+
+      {/* Modal de confirmación para eliminar */}
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onOpenChange={setIsConfirmOpen}
+        title="Confirmar eliminación"
+        message={`¿Estás seguro de eliminar el estudio "${estudioToDelete?.codigo} - ${estudioToDelete?.nombre}"? Esta acción no se puede deshacer.`}
+        onConfirm={handleConfirmDelete}
+        isConfirming={isDeleting}
+      />
     </div>
   );
 }

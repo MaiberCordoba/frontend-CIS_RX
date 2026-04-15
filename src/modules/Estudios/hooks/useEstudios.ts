@@ -1,6 +1,6 @@
 // src/modules/Estudios/hooks/useEstudios.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getEstudios, createEstudio, updateEstudio } from "../api/EstudiosApi";
+import { getEstudios, createEstudio, updateEstudio, deleteEstudio} from "../api/EstudiosApi";
 import { useState } from "react";
 import { Estudio } from "../EstudiosType";
 import { toast } from "@heroui/react";
@@ -43,12 +43,24 @@ export const useEstudios = () => {
     },
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: deleteEstudio,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["estudios"] });
+      toast.success("Estudio eliminado", { description: "El estudio ha sido eliminado correctamente" });
+    },
+    onError: (error: any) => {
+      toast.danger("Error", { description: error.response?.data?.detail || "Error al eliminar el estudio" });
+    },
+  });
   return {
     ...query,
     searchTerm,
     setSearchTerm,
     createEstudio: createMutation.mutate,
     updateEstudio: updateMutation.mutate,
+    deleteEstudio: deleteMutation.mutate,
     isSaving: createMutation.isPending || updateMutation.isPending,
+    isDeleting: deleteMutation.isPending,
   };
 };
