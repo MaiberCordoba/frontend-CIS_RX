@@ -1,20 +1,20 @@
 // src/modules/Estudios/hooks/useUploadEstudios.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { uploadEstudios } from "../api/EstudiosApi";
+import { uploadEstudiosJSON } from "../api/EstudiosApi";
 import { toast } from "@heroui/react";
 
 export const useUploadEstudios = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: uploadEstudios,
+    mutationFn: uploadEstudiosJSON, 
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["estudios"] });
       toast.success(`Carga completada: ${data.creados} creados, ${data.actualizados} actualizados`);
     },
-    onError: () => {
-      toast.danger(` Error al cargar el archivo`,{
-          description: "revise que el exel tenga los mismos parametros indicados"
+    onError: (error: any) => {
+      toast.danger("Error al cargar los datos", {
+        description: error.response?.data?.error || "Revise que el Excel tenga el formato correcto"
       });
     }
   });

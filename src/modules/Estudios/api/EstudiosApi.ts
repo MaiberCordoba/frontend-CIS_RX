@@ -23,3 +23,10 @@ export const uploadEstudios = async (file: File): Promise<{ creados: number; act
   });
   return response.data;
 };
+
+
+// src/modules/Estudios/api/EstudiosApi.ts
+export const uploadEstudiosJSON = async (estudios: any[]): Promise<any> => {
+  const response = await baseApi.post('estudios/carga-masiva-json/', { estudios });
+  return response.data;
+};
